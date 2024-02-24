@@ -1,0 +1,3 @@
+const semiCirclesOutline = "<svg width=\"159\" height=\"68\" viewBox=\"0 0 159 68\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<mask id=\"mask0_8_653\" style=\"mask-type:alpha\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"159\" height=\"68\">\n<rect width=\"159\" height=\"68\" fill=\"#BD7A7A\"/>\n</mask>\n<g mask=\"url(#mask0_8_653)\">\n<mask id=\"mask1_8_653\" style=\"mask-type:alpha\" maskUnits=\"userSpaceOnUse\" x=\"44\" y=\"9\" width=\"80\" height=\"35\">\n<rect x=\"44\" y=\"9\" width=\"80\" height=\"35\" fill=\"#D9D9D9\"/>\n</mask>\n<g mask=\"url(#mask1_8_653)\">\n<circle cx=\"83.5\" cy=\"43.5\" r=\"24\" stroke=\"black\"/>\n</g>\n</g>\n</svg>\n";
+
+export default semiCirclesOutline;

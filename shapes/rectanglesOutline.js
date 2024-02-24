@@ -1,0 +1,3 @@
+const rectanglesOutline = "<svg width=\"159\" height=\"68\" viewBox=\"0 0 159 68\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<mask id=\"mask0_8_656\" style=\"mask-type:alpha\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"159\" height=\"68\">\n<rect width=\"159\" height=\"68\" fill=\"#D9D9D9\"/>\n</mask>\n<g mask=\"url(#mask0_8_656)\">\n<rect x=\"52.5\" y=\"23.5\" width=\"55\" height=\"21\" stroke=\"black\"/>\n</g>\n</svg>\n";
+
+export default rectanglesOutline;

@@ -1,0 +1,3 @@
+const frazzlesFaded = "<svg width=\"159\" height=\"27\" viewBox=\"0 0 159 27\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<mask id=\"mask0_8_313\" style=\"mask-type:alpha\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"159\" height=\"27\">\n<rect width=\"159\" height=\"27\" fill=\"#D9D9D9\"/>\n</mask>\n<g mask=\"url(#mask0_8_313)\">\n<path d=\"M2.5 10L10 17L17.5 10L24.5 17L31.5 10L38.5 17L45.5 10\" stroke=\"black\"/>\n<path d=\"M45.5 10L52.5 17L59.5 10L66.5 17L73.5 10L80.5 17L87.5 10L94.5 17L101.5 10L108.5 17L115.5 10L122.5 17L129.5 10L136.5 17L143.5 10L150.5 17L157.5 10\" stroke=\"black\"/>\n</g>\n</svg>\n";
+
+export default frazzlesFaded;

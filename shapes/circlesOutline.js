@@ -1,0 +1,3 @@
+const circlesOutline = "<svg width=\"159\" height=\"68\" viewBox=\"0 0 159 68\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<mask id=\"mask0_8_647\" style=\"mask-type:alpha\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"159\" height=\"68\">\n<rect width=\"159\" height=\"68\" fill=\"#BD7A7A\"/>\n</mask>\n<g mask=\"url(#mask0_8_647)\">\n<circle cx=\"80\" cy=\"32\" r=\"10.5\" stroke=\"black\"/>\n</g>\n</svg>\n";
+
+export default circlesOutline;
