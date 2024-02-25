@@ -203,104 +203,80 @@ document.addEventListener('keydown', (event) => {
 });
 
 const endpoint = "https://letsparty.olk1.com/letsparty.php";
+
 // validate user inputted email address
-document.getElementById('sendEmailBtn').addEventListener('click', function() {
+document.getElementById('sendEmailBtn').addEventListener('click', async function() {
+  if (senderEmail.value === "") {
+    senderEmail.value = "Please enter your email address";
+    setTimeout(() => {
+      senderEmail.value = "";
+    }, 1500);
+    return;
+  }
 
-    if(senderEmail.value === ""){
-      senderEmail.value = "Please enter your email address";
-        setTimeout(() => {
-          senderEmail.value = "";
-        }, 1500);
-      return;
-    }
+  if (!validateEmail(senderEmail.value)) {
+    senderEmailError.textContent = "Your email address may contain errors";
+    setTimeout(() => {
+      senderEmailError.textContent = "";
+    }, 1500);
+    return;
+  }
 
-    if(!validateEmail(senderEmail.value)){
-      senderEmailError.textContent = "Your email address may contain errors";
-      setTimeout(() => {
-        senderEmailError.textContent = "";
-      }, 1500);
-      return;
-    }
+  try {
+    // if email validates, send email payload
+    const payload = {
+      from: senderEmail.value,
+      subject: 'New Lets Party Email Sign Up',
+      body: senderEmail.value,
+    };
     
-    fetch(endpoint)
-      .then(response => {
-          if (!response.ok) {
-              throw new Error('Failed to fetch configuration');
-          }
-          return response.json();
-      })
-      .then(config => {
+    await sendEmail(payload);
 
-          // if email validates send an email
-          const payload = {
-            from: senderEmail.value,
-            to: config.emailRecipient,
-            subject: 'New Lets Party Email Sign Up',
-            body: senderEmail.value,
-          };
-
-          senderEmail.value = "";
-          sendEmail(payload);
-      })
-      .catch(error => {
-          console.error('Error fetching configuration', error);
-          headline.innerHTML = `<span>OOPS! Please try again</span>`;
-      });
+    // reset input after successful email send
+    senderEmail.value = "";
+  } catch (error) {
+    console.error('Error:', error);
+    headline.innerHTML = `<span>OOPS! Please try again</span>`;
+  }
 });
+
+
+async function sendEmail(payload) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+
+  if (!response.ok) {
+    throw new Error('Failed to send email');
+  }
+
+  const data = await response.json();
+
+  modalOverlay.classList.add("hidden");
+  subscriptionModal.classList.add("hidden");
+  hero.classList.remove("hidden");
+
+  if (data.success) {
+    openModalBtn.classList.add("hidden");
+    headline.innerHTML = `<span>Welcome to the PARTY pal!</span>`;
+    strapline.innerHTML = `<span>Check your inbox over the next few days for further instructions.</span>`;
+  } else {
+    headline.innerHTML = `<span>OOPS! Please try again</span>`;
+  }
+}
+
+
 
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-// send the email to the backend and update the dom accordingly
-function sendEmail(payload) {
-    // Fetch configuration from the server
-    fetch(endpoint)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch configuration');
-            }
-            return response.json();
-        })
-        .then(config => {
-            // Use the fetched configuration in your logic
-            const serverEndpoint = config.emailServer;
-
-            // Perform the email sending logic
-            return fetch(serverEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to send email');
-            }
-            return response.json();
-        })
-        .then(data => {
-            modalOverlay.classList.add("hidden");
-            subscriptionModal.classList.add("hidden");
-            
-            hero.classList.remove("hidden");
-            
-            if(data.success){
-                openModalBtn.classList.add("hidden");
-                headline.innerHTML = `<span>Welcome to the PARTY pal!</span>`;
-                strapline.innerHTML = `<span>Check your inbox over the next few days for further instructions.</span>`;
-            } else {
-                headline.innerHTML = `<span>OOPS! Please try again</span>`;
-            }
-        })
-        .catch(error => {
-            console.error('Error sending email', error);
-            headline.innerHTML = `<span>OOPS! Please try again</span>`;
-        });
-}
 
 // 
 // 
