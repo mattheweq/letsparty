@@ -1,5 +1,4 @@
 import shapes from './shapes.js';
-import {EMAIL_SERVER, EMAIL_RECIPIENT} from './env.js';
 
 let shapeList = shapes;
 
@@ -203,7 +202,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-
+const endpoint = "https://letsparty.olk1.com/letsparty.php";
 // validate user inputted email address
 document.getElementById('sendEmailBtn').addEventListener('click', function() {
 
@@ -222,17 +221,31 @@ document.getElementById('sendEmailBtn').addEventListener('click', function() {
       }, 1500);
       return;
     }
-
-    // if email validates send an email
-    const payload = {
-        from: senderEmail.value,
-        to: EMAIL_RECIPIENT,
-        subject: 'New Lets Party Email Sign Up',
-        body: senderEmail.value,
-    };
     
-    sendEmail(payload);
-    senderEmail.value = "";
+    fetch(endpoint)
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Failed to fetch configuration');
+          }
+          return response.json();
+      })
+      .then(config => {
+
+          // if email validates send an email
+          const payload = {
+            from: senderEmail.value,
+            to: config.emailRecipient,
+            subject: 'New Lets Party Email Sign Up',
+            body: senderEmail.value,
+          };
+
+          senderEmail.value = "";
+          sendEmail(payload);
+      })
+      .catch(error => {
+          console.error('Error fetching configuration', error);
+          headline.innerHTML = `<span>OOPS! Please try again</span>`;
+      });
 });
 
 function validateEmail(email) {
@@ -242,41 +255,51 @@ function validateEmail(email) {
 
 // send the email to the backend and update the dom accordingly
 function sendEmail(payload) {
-    const serverEndpoint = EMAIL_SERVER;
+    // Fetch configuration from the server
+    fetch(endpoint)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch configuration');
+            }
+            return response.json();
+        })
+        .then(config => {
+            // Use the fetched configuration in your logic
+            const serverEndpoint = config.emailServer;
 
-    fetch(serverEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to send email');
-        }
-        return response.json();
-    })
-    .then(data => {
-        modalOverlay.classList.add("hidden");
-        subscriptionModal.classList.add("hidden");
-        
-        hero.classList.remove("hidden");
-        
-        if(data.success){
-          // console.log('Email sent successfully', data);
-          openModalBtn.classList.add("hidden");
-          headline.innerHTML = `<span>Welcome to the PARTY pal!</span>`;
-          strapline.innerHTML = `<span>Check your inbox over the next few days for further instructions.</span>`;
-        } else {
-          headline.innerHTML = `<span>OOPS! Please try again</span>`;
-        }
-    })
-    .catch(error => {
-        console.error('Error sending email', error);
-        
-        headline.innerHTML = `<span>OOPS! Please try again</span>`;
-    });
+            // Perform the email sending logic
+            return fetch(serverEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send email');
+            }
+            return response.json();
+        })
+        .then(data => {
+            modalOverlay.classList.add("hidden");
+            subscriptionModal.classList.add("hidden");
+            
+            hero.classList.remove("hidden");
+            
+            if(data.success){
+                openModalBtn.classList.add("hidden");
+                headline.innerHTML = `<span>Welcome to the PARTY pal!</span>`;
+                strapline.innerHTML = `<span>Check your inbox over the next few days for further instructions.</span>`;
+            } else {
+                headline.innerHTML = `<span>OOPS! Please try again</span>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error sending email', error);
+            headline.innerHTML = `<span>OOPS! Please try again</span>`;
+        });
 }
 
 // 

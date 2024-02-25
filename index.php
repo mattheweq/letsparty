@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shapes</title>
+  <title>Lets Party</title>
   <link rel='shortcut icon' href='https://easycss.github.io/favicon/favicon.png' type='image/x-icon' />
   <script src="./tailwindcss.min.js"></script>
   <link rel='stylesheet' href='style.css' />
 </head>
 <body>
-  
 
   <div id="hero">
    <h1 id="headline" class="brute px-1 pt-2 pb-2.5 mb-4 md:mb-2 font-bold leading-tight text-4xl bg-yellow-400">Do you like to PARTY?</h1>

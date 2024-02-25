@@ -5,4 +5,5 @@ archive/*
 DEVREADME.md
 notes.js
 letsparty.php
-env.js
+config.php
+/config/*
