@@ -1,4 +1,5 @@
 import shapes from './shapes.js';
+import {EMAIL_SERVER, EMAIL_RECIPIENT} from './env.js';
 
 let shapeList = shapes;
 
@@ -139,6 +140,7 @@ generateBackground(element, colorList, numberOfShapes, mode, rotation);
 const animateBox = document.querySelector("#animate");
 
 const contrast = document.getElementById('contrast');
+const headline = document.getElementById('headline');
 const strapline = document.getElementById('strapline');
 
 function addRemoveBgCol(element){
@@ -171,11 +173,12 @@ animateBox.addEventListener("click", function () {
   const closeModalBtn = document.getElementById('closeModalBtn');
   const modalOverlay = document.getElementById('modalOverlay');
   const subscriptionModal = document.getElementById('subscriptionModal');
-  const email = document.getElementById('email');
+  const senderEmailError = document.getElementById('senderEmailError');
+  const senderEmail = document.getElementById('senderEmail');
 
   openModalBtn.addEventListener('click', () => {
     setTimeout(() => {
-      email.focus();
+      senderEmail.focus();
     }, 100);
     hero.classList.add("hidden");
     modalOverlay.classList.remove('hidden');
@@ -189,15 +192,93 @@ animateBox.addEventListener("click", function () {
   });
 
 document.addEventListener('keydown', (event) => {
-    // Check if the escape key was pressed
+    // check if the escape key was pressed
     if (event.key === 'Escape') {
-        // Hide the modal overlay and subscription modal
+        // hide the modal overlay and subscription modal
         modalOverlay.classList.add('hidden');
         subscriptionModal.classList.add('hidden');
 
-        // Show the "hero" element again
+        // show the "hero" element again
         document.getElementById('hero').classList.remove("hidden");
     }
 });
 
+
+// validate user inputted email address
+document.getElementById('sendEmailBtn').addEventListener('click', function() {
+
+    if(senderEmail.value === ""){
+      senderEmail.value = "Please enter your email address";
+        setTimeout(() => {
+          senderEmail.value = "";
+        }, 1500);
+      return;
+    }
+
+    if(!validateEmail(senderEmail.value)){
+      senderEmailError.textContent = "Your email address may contain errors";
+      setTimeout(() => {
+        senderEmailError.textContent = "";
+      }, 1500);
+      return;
+    }
+
+    // if email validates send an email
+    const payload = {
+        from: senderEmail.value,
+        to: EMAIL_RECIPIENT,
+        subject: 'New Lets Party Email Sign Up',
+        body: senderEmail.value,
+    };
+    
+    sendEmail(payload);
+    senderEmail.value = "";
+});
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// send the email to the backend and update the dom accordingly
+function sendEmail(payload) {
+    const serverEndpoint = EMAIL_SERVER;
+
+    fetch(serverEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send email');
+        }
+        return response.json();
+    })
+    .then(data => {
+        modalOverlay.classList.add("hidden");
+        subscriptionModal.classList.add("hidden");
+        
+        hero.classList.remove("hidden");
+        
+        if(data.success){
+          // console.log('Email sent successfully', data);
+          openModalBtn.classList.add("hidden");
+          headline.innerHTML = `<span>Welcome to the PARTY pal!</span>`;
+          strapline.innerHTML = `<span>Check your inbox over the next few days for further instructions.</span>`;
+        } else {
+          headline.innerHTML = `<span>OOPS! Please try again</span>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error sending email', error);
+        
+        headline.innerHTML = `<span>OOPS! Please try again</span>`;
+    });
+}
+
+// 
+// 
 window.onload = animateBox.checked = false;

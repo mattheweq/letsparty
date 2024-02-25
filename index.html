@@ -12,7 +12,7 @@
   
 
   <div id="hero">
-   <h1 class="brute px-1 pt-2 pb-2.5 mb-4 md:mb-2 font-bold leading-tight text-4xl bg-yellow-400">Welcome to the PARTY pal!</h1>
+   <h1 id="headline" class="brute px-1 pt-2 pb-2.5 mb-4 md:mb-2 font-bold leading-tight text-4xl bg-yellow-400">Do you like to PARTY?</h1>
     
     <div class="my-4">
      
@@ -32,21 +32,22 @@
     </p>
   </div>
 
-    <!-- Modal overlay-->
+    <!-- modal overlay-->
     <div id="modalOverlay" class="fixed inset-0 bg-white opacity-20 hidden"></div>
-    <!-- Modal content -->
+    <!-- modal content -->
     <div id="subscriptionModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md shadow-lg hidden">
-        <!-- Your email subscription form goes here -->
-        <form>
-            <label for="email" class="block mb-2 text-gray-800">What's your Email?</label>
-            <input type="email" id="email" name="email" class="w-full p-2 border rounded-md" required>
+        
+        <!-- email subscription -->
+        <label for="email" class="block mb-2 text-gray-800">What's your Email?</label>
+        <input type="email" id="senderEmail" name="email" class="w-full p-2 border rounded-md" required>
 
-            <button type="submit" class="btn mt-6 text-black hover:bg-green-300"><span class="bg-green-300">LETS PARTY!</span></button>
+        <p id="senderEmailError" class="text-sm text-red-600 mt-2"></p>
 
-            <p class="text-slate-300 text-sm mt-1 -mb-2">Your email address will be stored securely and you can unsubscribe anytime.</p>
-        </form>
+        <button id="sendEmailBtn" class="btn mt-5 text-black hover:bg-green-300"><span class="bg-green-300">LETS PARTY!</span></button>
 
-        <!-- Close button -->
+        <p class="text-slate-300 text-sm mt-1 -mb-2">Your email address will be stored securely and you can unsubscribe anytime.</p>
+
+        <!-- modal close button -->
         <button id="closeModalBtn" class="absolute top-0 right-0 m-4 text-gray-600">X</button>
     </div>
   

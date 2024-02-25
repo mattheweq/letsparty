@@ -4,3 +4,5 @@ archive/*
 .env
 DEVREADME.md
 notes.js
+letsparty.php
+env.js
